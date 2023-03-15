@@ -57,8 +57,6 @@ exit jenkins bash
 
 I put the test source code and dockerfile on gitea.
 
-![Action screenshot](docs/imgs/gitea.png)
-
 ## How to use Jenkins to run test case
 
 Two methods, Freestyle project(easy to use) or Pipeline.
