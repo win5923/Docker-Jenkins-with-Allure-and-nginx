@@ -1,0 +1,63 @@
+# To execute this docker-compose yml file use `docker-compose -f docker-compose-v3-dynamic-grid.yml up`
+# Add the `-d` flag at the end for detached execution
+# To stop the execution, hit Ctrl+C, and then `docker-compose -f docker-compose-v3-dynamic-grid.yml down`
+version: "3"
+services:
+  node-docker:
+    image: selenium/node-docker:4.8.1-20230306
+    volumes:
+      - ./jenkins_data/assets:/opt/selenium/assets
+      - ./NodeDocker/config.toml:/opt/bin/config.toml
+      - /var/run/docker.sock:/var/run/docker.sock
+    depends_on:
+      - selenium-hub
+    environment:
+      - SE_EVENT_BUS_HOST=selenium-hub
+      - SE_EVENT_BUS_PUBLISH_PORT=4442
+      - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+      - SE_VNC_NO_PASSWORD=1 # NO_PASSWORD
+
+  selenium-hub:
+    image: selenium/hub:4.8.1-20230306
+    container_name: selenium-hub
+    ports:
+      - "4442:4442"
+      - "4443:4443"
+      - "4444:4444"
+  
+  jenkins:
+    image: jenkins/jenkins:lts-jdk11
+    container_name: jenkins-lts-jdk11
+    privileged: true
+    user: root
+    environment:
+      - TZ=Asia/Taipei
+      - JAVA_OPTS=-Duser.timezone=Asia/Taipei
+    volumes:
+      - ./jenkins_data:/var/jenkins_home # 數據持久化
+      - /var/run/docker.sock:/var/run/docker.sock # 掛載本機 Docker 到 Jenkins 容器中使用
+    networks:
+      - jenkins
+    ports:
+      - 8080:8080
+      - 50000:50000
+    restart: always
+  
+  server:
+    image: nginx:1.23.3
+    container_name: nginx
+    volumes:
+      - ./nginx/conf/nginx.conf:/etc/nginx/nginx.conf # your nginx config file
+      - ./jenkins_data/workspace:/var/allure
+    restart: always
+    ports:
+      - 80:80
+      - 443:443
+    networks:
+      - jenkins
+    depends_on: 
+      - jenkins
+
+    
+networks:
+  jenkins:
