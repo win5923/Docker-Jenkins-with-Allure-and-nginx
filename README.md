@@ -5,7 +5,6 @@ Executing Selenium tests with pytest using Python.
   + [Start Jenkin、Selenium dynamic grid、nginx(for allure) with docker compose](#start-jenkin-selenium-dynamic-grid-nginx-for-allure-with-docker-compose)
   + [Download Allure Plugin](#download-allure-plugin)
   + [Install the docker client if you want to execute the Docker command in Docker Jenkins](#install-the-docker-client-if-you-want-to-execute-the-docker-command-in-docker-jenkins)
-  + [Unit test source code](#unit-test-source-code)
   + [How to use Jenkins to run test case](#how-to-use-jenkins-to-run-test-case)
     - [For Freestyle](#for-freestyle)
   + [Allow others to view the Allure report](#allow-others-to-view-the-allure-report)
@@ -52,10 +51,6 @@ exit jenkins bash
 
     exit
 
-
-## Unit test source code
-
-I put the test source code and dockerfile on gitea.
 
 ## How to use Jenkins to run test case
 
