@@ -8,7 +8,6 @@ Executing Selenium tests with pytest using Python.
   + [Unit test source code](#unit-test-source-code)
   + [How to use Jenkins to run test case](#how-to-use-jenkins-to-run-test-case)
     - [For Freestyle](#for-freestyle)
-    - [Jenkins test case](#jenkins-test-case)
   + [Allow others to view the Allure report](#allow-others-to-view-the-allure-report)
   + [Feature](#feature)
 ## Structure setup
@@ -77,8 +76,6 @@ Enter the project name, select the Freestyle project and click `"確定"`
 
 click `"git"` and paste github repo.If you do not want to keep previous data, check `"Delete workspace before build starts"`.
 
-![](docs/imgs/git.png)
-
 Scroll down to find the `"Build Steps"` section, click on `"新增建置步驟"`, then select `"執行 Shell"`. In the shell, enter the command. An example is shown below.
 
 ``` bash
@@ -95,34 +92,6 @@ Click `"馬上建置"`, and after the execution is complete, you can click on `"
 
 ![](docs/imgs/after_test.png)
 
-### Jenkins test case
-
-When you have finished writing your test cases, you don't need to build a new image. The reason I keep rebuilding the image is that the test cases are still being modified, and rebuilding the image will copy the updated test cases to the Docker container.
-
-* login test Jenkins in Build Steps
-``` bash
-git checkout blocka
-docker build -t python3.8.16-alpine3.17:Selenium .
-docker run --network="host" --rm -v /home/blocka/selenium_grid/jenkins_data/workspace/GDMS_login_test/allure-results:/test/allure-results -v /home/blocka/selenium_grid/jenkins_data/assets:/test/assets python3.8.16-alpine3.17:Selenium pytest --browser chrome -n auto login_test/ --alluredir allure-results
-docker run --network="host" --rm -v /home/blocka/selenium_grid/jenkins_data/workspace/GDMS_login_test/allure-results:/test/allure-results -v /home/blocka/selenium_grid/jenkins_data/assets:/test/assets python3.8.16-alpine3.17:Selenium pytest --browser firefox -n auto login_test/ --alluredir allure-results
-docker run --network="host" --rm -v /home/blocka/selenium_grid/jenkins_data/workspace/GDMS_login_test/allure-results:/test/allure-results -v /home/blocka/selenium_grid/jenkins_data/assets:/test/assets python3.8.16-alpine3.17:Selenium pytest --browser edge -n auto login_test/ --alluredir allure-results
-docker rmi python3.8.16-alpine3.17:Selenium
-```
-* API test Jenkins in Build Steps
-``` bash
-git checkout API_test
-docker build -t python3.8.16-alpine3.17:API .
-docker run --network="host" --rm -v /home/blocka/selenium_grid/jenkins_data/workspace/GDMS_API_test/allure-results:/test/allure-results python3.8.16-alpine3.17:API
-docker rmi python3.8.16-alpine3.17:API
-```
-* UI/UX test Jenkins in Build Steps
-``` bash
-git checkout UI_UX_test
-docker build -t python3.8.16-alpine3.17:UI .
-docker run --network="host" --rm -v /home/blocka/selenium_grid/jenkins_data/workspace/GDMS_UI_UX_test:/test python3.8.16-alpine3.17:UI python3 login.py
-docker run --network="host" --rm -v /home/blocka/selenium_grid/jenkins_data/workspace/GDMS_UI_UX_test/allure-results:/test/allure-results -v /home/blocka/selenium_grid/jenkins_data/workspace/GDMS_UI_UX_test/login_cookie:/test/login_cookie -v /home/blocka/selenium_grid/jenkins_data/assets:/test/assets python3.8.16-alpine3.17:UI pytest --browser Chrome -n auto test/ --alluredir allure-results
-docker rmi python3.8.16-alpine3.17:UI
-```
 
 ## Allow others to view the Allure report
 
