@@ -9,7 +9,6 @@ Executing Selenium tests with pytest using Python.
   + [How to use Jenkins to run test case](#how-to-use-jenkins-to-run-test-case)
     - [For Freestyle](#for-freestyle)
   + [Allow others to view the Allure report](#allow-others-to-view-the-allure-report)
-  + [Feature](#feature)
 ## Structure setup
 ### Start Jenkin、Selenium dynamic grid、nginx(for allure) with docker compose
 Running docker-compose in the background
@@ -100,10 +99,4 @@ Enter the command `"hostname -I"` in the Ubuntu command line,and You can see it 
 ![](docs/imgs/allure_report.png)
 
 After that, click on the project name and then click on 'allure-report/' to complete the process.
-
-## Feature
-- video record
-- test environment in allure environment
-- View Historical Test Charts
-
 
